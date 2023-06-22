@@ -6,7 +6,7 @@
 /*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:13:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/23 02:10:26 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/23 02:19:15 by jimpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,13 @@ void	set_rgb(t_rgb *rgb, char *rgb_str)
 			rgb->b = ft_atoi(buf[i]);
 		i++;
 	}
+	i = 0;
+	while (i < 3)
+	{
+		free (buf[i]);
+		i++;
+	}
+	free (buf);
 }
 
 void read_map(t_game *game, int fd)

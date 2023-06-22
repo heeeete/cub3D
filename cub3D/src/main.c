@@ -6,7 +6,7 @@
 /*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:18:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/23 01:36:35 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/23 02:20:17 by jimpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,6 +436,4 @@ int main(int argc, char *argv[])
 	mlx_hook(game.win, X_EVENT_KEY_PRESS, 0, &key_press, &game);
 	mlx_hook(game.win, X_EVENT_KEY_EXIT, 0, &exit_game, NULL);
 	mlx_loop(game.mlx);
-
-
 }
