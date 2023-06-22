@@ -33,6 +33,8 @@ typedef struct	s_img
 	int		size_l;
 	int		bpp;
 	int		endian;
+	int		img_width;
+	int		img_height;
 
 	char	*NO;
 	char	*SO;

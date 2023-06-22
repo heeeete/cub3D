@@ -6,7 +6,7 @@
 /*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:13:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/20 18:46:28 by huipark          ###   ########.fr       */
+/*   Updated: 2023/06/22 16:42:15 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,39 @@ void read_map(t_game *game, int fd)
 	while (game->map_info.map[len])
 		++len;
 	game->map_info.map_height = len - 6;
-	// if (game->map_info.map_height < 3)
-	// 	error("Error : invaild map", NULL);
 	free(save);
+}
+
+static void	init_player_direction(t_player *player , char c)
+{
+	if (c == 'E')
+	{
+		player->dir_x = 1.0;
+		player->dir_y = 0.0;
+		player->planeX = 0.0;
+		player->planeY = -0.66;
+	}
+	else if (c == 'W' )
+	{
+		player->dir_x = -1.0;
+		player->dir_y = 0.0;
+		player->planeX = 0.0;
+		player->planeY = 0.66;
+	}
+	else if (c == 'N')
+	{
+		player->dir_x = 0.0;
+  	 	player->dir_y = -1.0;
+		player->planeX = -0.66;
+    	player->planeY = 0.0;
+	}
+	else if (c == 'S')
+	{
+		player->dir_x = 0.0;
+		player->dir_y = 1.0;
+		player->planeX = 0.66;
+		player->planeY = 0.0;
+	}
 }
 
 static void find_player_direction(t_player *player, char c, int i, int j)
@@ -116,6 +146,7 @@ static void find_player_direction(t_player *player, char c, int i, int j)
 		player->x = j;
 		player->y = i;
 		player->player_direction = c;
+		init_player_direction(player, c);
 	}
 }
 

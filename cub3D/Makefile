@@ -1,5 +1,5 @@
 CC = cc
-# CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror
 OPT = -g -fsanitize=address
 MFLAGS 	= -L ./mlx -lmlx -framework OpenGL -framework AppKit
 
@@ -25,7 +25,7 @@ $(NAME):$(OBJS) $(DEPS)
 	@make -s bonus -C libft
 	@mv libft/libft.a ./
 	${CC} ${CFLAGS} $(MFLAGS) $(OPT) $(SRCS) libft.a -o ${NAME}
-	install_name_tool -change libmlx.dylib @executable_path/mlx/libmlx.dylib $@
+
 
 clean:
 	rm -f $(OBJS)

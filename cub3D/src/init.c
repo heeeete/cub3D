@@ -6,7 +6,7 @@
 /*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:10:14 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/20 18:45:22 by huipark          ###   ########.fr       */
+/*   Updated: 2023/06/22 16:43:26 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ void init(t_game *game, char *argv)
 
 	game->player.x = -1;
 	game->player.y = -1;
+	game->player.move_speed = 0.05;
+    game->player.rot_speed = 0.05;
+    game->map_info.re_buf = 0;
 	fd = open(argv, O_RDONLY);
 	if (fd < 0)
 		error("Error : file open error", NULL);
