@@ -6,7 +6,7 @@
 /*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:18:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/22 18:45:25 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/23 01:36:35 by jimpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,25 @@
 #include <math.h>
 #define height 1080
 #define width 1920
+
+void	paint_floor(t_game *game)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < height / 2)
+	{
+		x = 0;
+		while (x < width)
+		{
+			game->map_info.buf[y][x] = game->c_rgb.rgb;
+			game->map_info.buf[height - y - 1][x] = game->f_rgb.rgb;
+			x++;
+		}
+		y++;
+	}
+}
 
 void carc(t_game *game)
 {
@@ -30,6 +49,9 @@ void carc(t_game *game)
 			}
 		}
 	}
+	paint_floor(game);
+
+	// WALL CASTING
 	while (x < width)
 	{
 		double cameraX = 2 * x / (double)width - 1;
