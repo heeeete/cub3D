@@ -6,7 +6,7 @@
 /*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:13:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/22 20:53:23 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/23 02:10:26 by jimpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,25 @@ void	check_rgb(char *rgb_str)
 		error("RGB Error : too many ','", NULL);
 }
 
-int	set_rgb(char *rgb_str, int flag) {
-	char	*rgb;
-	int		ret;
+void	set_rgb(t_rgb *rgb, char *rgb_str)
+{
+	char	**buf;
+	int		i;
 
-	if (flag == 0)
-		rgb = ft_strtok(rgb_str, ",");
-	else
-		rgb = ft_strtok(NULL, ",");
-	if (!rgb)
-		error("RGB Error : There should be 3 numbers", NULL);
-	ret = ft_atoi(rgb);
-	if (ret < 0 || ret > 255)
-		error("RGB Error : ranges from 0 to 255", NULL);
-	return ret;
+	buf = ft_split(rgb_str, ',');
+	i = 0;
+	while (i < 3)
+	{
+		if (!buf[i])
+			error("RGB Error : There should be 3 numbers", NULL);
+		if (i == 0)
+			rgb->r = ft_atoi(buf[i]);
+		else if (i == 1)
+			rgb->g = ft_atoi(buf[i]);
+		else if (i == 2)
+			rgb->b = ft_atoi(buf[i]);
+		i++;
+	}
 }
 
 void read_map(t_game *game, int fd)

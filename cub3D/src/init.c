@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:10:14 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/22 16:43:26 by huipark          ###   ########.fr       */
+/*   Updated: 2023/06/23 02:10:19 by jimpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,8 @@ void init_rgb(t_game *game)
 {
 	check_rgb(game->img.F);
 	check_rgb(game->img.C);
-	game->f_rgb.r = set_rgb(game->img.F, 0);
-	game->f_rgb.g = set_rgb(game->img.F, 1);
-	game->f_rgb.b = set_rgb(game->img.F, 1);
-	game->c_rgb.r = set_rgb(game->img.C, 0);
-	game->c_rgb.g = set_rgb(game->img.C, 1);
-	game->c_rgb.b = set_rgb(game->img.C, 1);
+	set_rgb(&game->f_rgb, game->img.F);
+	set_rgb(&game->c_rgb, game->img.C);
 	game->f_rgb.rgb = (game->f_rgb.r << 16 | game->f_rgb.g << 8 | game->f_rgb.b);
 	game->c_rgb.rgb = (game->c_rgb.r << 16 | game->c_rgb.g << 8 | game->c_rgb.b);
 }

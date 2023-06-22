@@ -44,21 +44,13 @@ typedef struct	s_img
 	char	*C;
 }				t_img;
 
-typedef struct	s_frgb
+typedef struct	s_rgb
 {
 	int	r;
 	int	g;
 	int	b;
 	int	rgb;
-}				t_frgb;
-
-typedef struct	s_crgb
-{
-	int	r;
-	int	g;
-	int	b;
-	int	rgb;
-}				t_crgb;
+}				t_rgb;
 
 typedef struct	s_map
 {
@@ -91,8 +83,8 @@ typedef struct	s_game
 	t_img		img;
 	t_map		map_info;
 	t_player	player;
-	t_frgb		f_rgb;
-	t_crgb		c_rgb;
+	t_rgb		f_rgb;
+	t_rgb		c_rgb;
 }				t_game;
 
 //utils.c
@@ -112,7 +104,7 @@ void init_rgb(t_game *game);
 
 //init_utils.c
 void read_map(t_game *game, int fd);
-int	set_rgb(char *rgb_str, int flag);
+void	set_rgb(t_rgb *rgb, char *rgb_str);
 void	check_rgb(char *rgb_str);
 void search_map(t_game *game, t_player *player);
 
