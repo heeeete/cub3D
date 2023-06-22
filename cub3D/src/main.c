@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:18:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/22 17:08:50 by huipark          ###   ########.fr       */
+/*   Updated: 2023/06/22 18:45:25 by jimpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,13 +305,32 @@ void load_texture(t_game *game)
 	load_image(game, game->map_info.texture[3], game->img.EA, &img);
 }
 
+int	check_format(char *str)
+{
+	int	n;
+
+	if (!str)
+		return (-1);
+	n = ft_strlen(str);
+	if (n < 5)
+		return (-1);
+	if (str[n - 4] != '.')
+		return (-1);
+	else if (str[n - 3] != 'c')
+		return (-1);
+	else if (str[n - 2] != 'u')
+		return (-1);
+	else if (str[n - 1] != 'b')
+		return (-1);
+	return (0);
+}
+
 int main(int argc, char *argv[])
 {
 	t_game game;
 
-	if (argc != 2)
-		exit(1);
-
+	if (argc != 2 || check_format(argv[1]) != 0)
+		error("Error: <실행 파일> <맵 파일.cub>", NULL);
 	game.map_info.buf = (int **)malloc(sizeof(int *) * height);
 	for (int i = 0; i < height; i++)
 	{
