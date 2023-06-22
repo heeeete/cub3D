@@ -3,46 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:13:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/22 16:42:15 by huipark          ###   ########.fr       */
+/*   Updated: 2023/06/22 20:53:23 by jimpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void	check_rgb(char *rgb_str){
-	int		cnt;
+void	check_rgb(char *rgb_str)
+{
+	int	rgb_cnt;
+	int	sep_cnt;
 
 	if (!rgb_str)
-		error("invaild file", NULL);
-	cnt = 0;
+		error("Error : invaild file", NULL);
+	sep_cnt = 0;
 	while (*rgb_str)
 	{
-		while (*rgb_str == ' ')
-			++rgb_str;
-		if (*rgb_str == ',')
-			++cnt;
-		else if ((*rgb_str == 0 && cnt != 2) || *rgb_str == 0)
-			error("RGB_Error : invaild rgb", NULL);
-		else if (ft_isdigit(*rgb_str) && *(rgb_str + 1) == ' ')
+		rgb_cnt = 0;
+		while ((9 <= *rgb_str && *rgb_str <= 13) || (*rgb_str == 32))
+			rgb_str++;
+		while (ft_isdigit(*rgb_str))
 		{
-			++rgb_str;
-			while (*rgb_str == ' ')
-				++rgb_str;
-			if (*rgb_str == ',')
-				++cnt;
-			else if (!ft_isdigit(*rgb_str))
-				error("RGB_Error : rgb has to have only number", NULL);
+			rgb_cnt++;
+			rgb_str++;
 		}
-		else if (!ft_isdigit(*rgb_str) && *rgb_str != ' ')
-				error("RGB_Error : rgb has to have only number", NULL);
-		if (cnt > 2)
-			error("RGB_Error : too many ','", NULL);
-		if (*rgb_str != 0)
-			++rgb_str;
+		if ((rgb_cnt == 0) || ((*rgb_str != 0) && (*rgb_str != ',') && \
+		(9 > *rgb_str || *rgb_str > 13) && (*rgb_str != 32)))
+			error("RGB Error : rgb has to have only number", NULL);
+		while ((9 <= *rgb_str && *rgb_str <= 13) || (*rgb_str == 32))
+			rgb_str++;
+		if ((*rgb_str != 0) && (*rgb_str != ','))
+			error("RGB Error : there is space between number", NULL);
+		else if ((*rgb_str != 0) && (*rgb_str++ == ','))
+			sep_cnt++;
 	}
+	if (sep_cnt != 2)
+		error("RGB Error : too many ','", NULL);
 }
 
 int	set_rgb(char *rgb_str, int flag) {
@@ -54,7 +53,7 @@ int	set_rgb(char *rgb_str, int flag) {
 	else
 		rgb = ft_strtok(NULL, ",");
 	if (!rgb)
-		error("RGB_Error : There should be 3 numbers", NULL);
+		error("RGB Error : There should be 3 numbers", NULL);
 	ret = ft_atoi(rgb);
 	if (ret < 0 || ret > 255)
 		error("RGB Error : ranges from 0 to 255", NULL);
