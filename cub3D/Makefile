@@ -1,17 +1,32 @@
+NAME = cub3D
+
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+RM = rm -f
 OPT = -g -fsanitize=address
 MFLAGS 	= -L ./mlx -lmlx -framework OpenGL -framework AppKit
 
-NAME = cub3D
+LIBFT_DIR = ./Libft
+LIBFT_FLAG = -L$(LIBFT_DIR) -lft
+
 SRCS_DIR = ./src/
+INIT_DIR = $(SRCS_DIR)init/
+GNL_DIR = $(SRCS_DIR)gnl/
+KEY_PRESS_DIR = $(SRCS_DIR)key_press/
+
 SRCS = $(SRCS_DIR)main.c \
-		$(SRCS_DIR)get_next_line.c \
-		$(SRCS_DIR)get_next_line_utils.c \
 		$(SRCS_DIR)utils.c \
-		$(SRCS_DIR)parse.c \
-		$(SRCS_DIR)init.c \
-		$(SRCS_DIR)init_utils.c
+		$(SRCS_DIR)raycasting.c \
+		$(GNL_DIR)get_next_line.c \
+		$(GNL_DIR)get_next_line_utils.c \
+		$(KEY_PRESS_DIR)key_press_move.c \
+		$(KEY_PRESS_DIR)key_press_rotate.c \
+		$(INIT_DIR)parse.c \
+		$(INIT_DIR)init.c \
+		$(INIT_DIR)init_utils.c \
+		$(INIT_DIR)init_map.c \
+		$(INIT_DIR)init_rgb.c \
+		$(INIT_DIR)init_texture.c \
 
 DEPS_DIR = ./include/
 DEPS = $(DEPS_DIR)cub3d.h \
@@ -21,21 +36,21 @@ OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME):$(OBJS) $(DEPS)
-	@make -s bonus -C libft
-	@mv libft/libft.a ./
-	${CC} ${CFLAGS} $(MFLAGS) $(OPT) $(SRCS) libft.a -o ${NAME}
+$(NAME): $(OBJS) $(DEPS)
+	@make -s bonus -C $(LIBFT_DIR)
+	${CC} ${CFLAGS} $(MFLAGS) $(OPT) $(SRCS) $(LIBFT_FLAG) -o ${NAME}
 
 
 clean:
-	rm -f $(OBJS)
-	make -s clean -C libft
+	$(RM) $(OBJS)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME)
-	rm -f libft.a
-	make -s clean -C libft
+	$(RM) $(NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
-re: fclean all
+re:
+	$(MAKE) fclean
+	$(MAKE) all
 
 .PHONY: all clean fclean re
