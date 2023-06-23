@@ -91,6 +91,7 @@ typedef struct	s_game
 void	error(char *msg, char *msg2);
 void	*wrap_malloc(size_t s);
 int		exit_game(void);
+int	check_format(char *str);
 
 //parse.c
 void	check_texture(t_game *game, char *line);
@@ -103,9 +104,33 @@ void init(t_game *game, char *argv);
 void init_rgb(t_game *game);
 
 //init_utils.c
-void read_map(t_game *game, int fd);
-void	set_rgb(t_rgb *rgb, char *rgb_str);
-void	check_rgb(char *rgb_str);
-void search_map(t_game *game, t_player *player);
+int	check_map_error(char c);
+int	check_invalid_map(int i, int j, int prev_line_len, t_game *game);
+void	check_player_position(char **map, int x, int y);
+void	find_player_direction(t_player *player, char c, int i, int j);
+void	init_player_direction(t_player *player, char c);
+
+//key_press_utils.c
+int key_press(int key, t_game *game);
+void	press_w(t_game *game);
+void	press_s(t_game *game);
+void	press_a(t_game *game);
+void	press_d(t_game *game);
+void press_right(t_player *player);
+void press_left(t_player *player);
+
+//raycasting.c
+int main_loop(t_game *game);
+
+//init_map.c
+void init_int_map(t_game *game);
+void init_game_map(t_game *game);
+
+//init_texture.c
+void	init_texture(t_game *game);
+
+//init_rgb.c
+void	init_rgb(t_game *game);
+
 
 #endif

@@ -1,4 +1,16 @@
-#include "../include/get_next_line.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/23 18:27:08 by jimpark           #+#    #+#             */
+/*   Updated: 2023/06/23 23:12:50 by jimpark          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/get_next_line.h"
 
 size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 {

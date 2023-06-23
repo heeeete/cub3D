@@ -1,0 +1,85 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_rgb.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/23 22:59:19 by jimpark           #+#    #+#             */
+/*   Updated: 2023/06/23 23:09:15 by jimpark          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/cub3d.h"
+
+static void	check_rgb(char *rgb_str)
+{
+	int	rgb_cnt;
+	int	sep_cnt;
+
+	if (!rgb_str)
+		error("Error : invaild file", NULL);
+	sep_cnt = 0;
+	while (*rgb_str)
+	{
+		rgb_cnt = 0;
+		while ((9 <= *rgb_str && *rgb_str <= 13) || (*rgb_str == 32))
+			rgb_str++;
+		while (ft_isdigit(*rgb_str) && rgb_cnt++ >= 0)
+			rgb_str++;
+		if ((rgb_cnt == 0) || ((*rgb_str != 0) && (*rgb_str != ',') && \
+		(9 > *rgb_str || *rgb_str > 13) && (*rgb_str != 32)))
+			error("RGB Error : rgb has to have only number", NULL);
+		while ((9 <= *rgb_str && *rgb_str <= 13) || (*rgb_str == 32))
+			rgb_str++;
+		if ((*rgb_str != 0) && (*rgb_str != ','))
+			error("RGB Error : there is space between number", NULL);
+		else if ((*rgb_str != 0) && (*rgb_str++ == ','))
+			sep_cnt++;
+	}
+	if (sep_cnt != 2)
+		error("RGB Error : too many ','", NULL);
+}
+
+static void	set_rgb(t_rgb *rgb, char *rgb_str)
+{
+	char	**buf;
+	int		i;
+
+	buf = ft_split(rgb_str, ',');
+	i = 0;
+	while (i < 3)
+	{
+		if (!buf[i])
+			error("RGB Error : There should be 3 numbers", NULL);
+		if (i == 0)
+			rgb->r = ft_atoi(buf[i]);
+		else if (i == 1)
+			rgb->g = ft_atoi(buf[i]);
+		else if (i == 2)
+			rgb->b = ft_atoi(buf[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		free (buf[i]);
+		i++;
+	}
+	free (buf);
+}
+
+void	init_rgb(t_game *game)
+{
+	t_rgb	*f_rgb;
+	t_rgb	*c_rgb;
+
+	f_rgb = &(game->f_rgb);
+	c_rgb = &(game->c_rgb);
+	check_rgb(game->img.F);
+	check_rgb(game->img.C);
+	set_rgb(&game->f_rgb, game->img.F);
+	set_rgb(&game->c_rgb, game->img.C);
+	f_rgb->rgb = (f_rgb->r << 16 | f_rgb->g << 8 | f_rgb->b);
+	c_rgb->rgb = (c_rgb->r << 16 | c_rgb->g << 8 | c_rgb->b);
+}

@@ -1,0 +1,91 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/16 17:13:36 by huipark           #+#    #+#             */
+/*   Updated: 2023/06/23 23:09:14 by jimpark          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/cub3d.h"
+
+void	init_player_direction(t_player *player, char c)
+{
+	if (c == 'E' || c == 'W')
+	{
+		player->dir_x = 1.0;
+		player->dir_y = 0.0;
+		player->planeX = 0.0;
+		player->planeY = -0.66;
+		if (c == 'W')
+		{
+			player->dir_x = -player->dir_x;
+			player->planeY = -player->planeY;
+		}
+	}
+	else if (c == 'N' || c == 'S')
+	{
+		player->dir_x = 0.0;
+		player->dir_y = -1.0;
+		player->planeX = -0.66;
+		player->planeY = 0.0;
+		if (c == 'S')
+		{
+			player->dir_y = -player->dir_y;
+			player->planeX = -player->planeX;
+		}
+	}
+}
+
+void	find_player_direction(t_player *player, char c, int i, int j)
+{
+	if (c == 'W' || c == 'S' || c == 'N' || c == 'E')
+	{
+		if (player->x != -1 && player->y != -1)
+			error("Error : There must be only one player", NULL);
+		player->x = j;
+		player->y = i;
+		player->player_direction = c;
+		init_player_direction(player, c);
+	}
+}
+
+void	check_player_position(char **map, int x, int y)
+{
+	if (x == -1 && y == -1)
+		error("Error : no players", NULL);
+	else if (map[y + 1] == NULL || y - 1 == -1)
+		error("Error : check player position", NULL);
+	else if (map[y][x + 1] == '\0' || x - 1 == -1)
+		error("Error : check player position", NULL);
+	else if (map[y + 1][x] != '1' && map[y - 1][x] != '1' \
+				&& map[y + 1][x] != '0' && map[y - 1][x] != '0')
+		error("Error : check player position", NULL);
+	else if (map[y][x + 1] != '1' && map[y][x - 1] != '1' \
+				&& map[y][x + 1] != '0' && map[y][x - 1] != '0')
+		error("Error : check player position", NULL);
+}
+
+int	check_invalid_map(int i, int j, int prev_line_len, t_game *game)
+{
+	char	**map;
+
+	map = game->map_info.map;
+	if (j > prev_line_len)
+		return (1);
+	if (i == 0 || j == 0 || i == game->map_info.map_height \
+		|| !map[i][j + 1] || map[i][j - 1] == ' ' || map[i][j + 1] == ' ' \
+		|| map[i - 1][j] == ' ' || map[i + 1][j] == ' ')
+		return (1);
+	return (0);
+}
+
+int	check_map_error(char c)
+{
+	if (c != '1' && c != 'N' && c != 'S' && c != 'W' && c != 'E' && c != ' ')
+		return (1);
+	return (0);
+}
