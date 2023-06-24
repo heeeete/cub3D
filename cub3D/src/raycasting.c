@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 18:52:57 by jimpark           #+#    #+#             */
-/*   Updated: 2023/06/23 23:30:03 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/24 18:56:47 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,142 +52,135 @@ static void	set_buf_zero(t_game *game)
 	}
 }
 
+void	init_raycasting(t_ray *info, t_game *game)
+{
+	info->camera_x = 2 * info->x / (double)WIDTH - 1;
+	info->dir_x = game->player.dir_x + game->player.planeX * info->camera_x;
+	info->dir_y = game->player.dir_y + game->player.planeY * info->camera_x;
+	info->map_x = (int)game->player.x;
+	info->map_y = (int)game->player.y;
+	info->delta_dist_x = fabs(1 / info->dir_x);
+	info->delta_dist_y = fabs(1 / info->dir_y);
+	info->hit = 0;
+}
+
+void calculateSideDistances(t_game *game, t_ray *info)
+{
+    if (info->dir_x < 0)
+    {
+        info->step_x = -1;
+        info->side_dist_x = (game->player.x - info->map_x) * info->delta_dist_x;
+    }
+    else
+    {
+        info->step_x = 1;
+        info->side_dist_x = (info->map_x + 1.0 - game->player.x) * info->delta_dist_x;
+    }
+    if (info->dir_y < 0)
+    {
+        info->step_y = -1;
+        info->side_dist_y = (game->player.y - info->map_y) * info->delta_dist_y;
+    }
+    else
+    {
+        info->step_y = 1;
+        info->side_dist_y = (info->map_y + 1.0 - game->player.y) * info->delta_dist_y;
+    }
+}
+
+void findWallCollision(t_game* game, t_ray* info)
+{
+    while (info->hit == 0)
+    {
+        if (info->side_dist_x < info->side_dist_y)
+        {
+            info->side_dist_x += info->delta_dist_x;
+            info->map_x += info->step_x;
+            info->side = 0;
+        }
+        else
+        {
+            info->side_dist_y += info->delta_dist_y;
+            info->map_y += info->step_y;
+            info->side = 1;
+        }
+        if (game->map_info.int_map[info->map_y][info->map_x] > 0)
+            info->hit = 1;
+    }
+	if (info->side == 0)
+			info->perp_wall_dist = (info->map_x - game->player.x + (1 - info->step_x) / 2) / info->dir_x;
+	else
+			info->perp_wall_dist = (info->map_y - game->player.y + (1 - info->step_y) / 2) / info->dir_y;
+}
+
+void calculateDrawing(t_ray *info)
+{
+	info->line_height = (int)(HEIGHT / info->perp_wall_dist);
+	info->draw_start = -info->line_height / 2 + HEIGHT / 2;
+	if (info->draw_start < 0)
+		info->draw_start = 0;
+	info->draw_end = info->line_height / 2 + HEIGHT / 2;
+	if (info->draw_end >= HEIGHT)
+		info->draw_end = HEIGHT - 1;
+	if (info->side == 0 && info->dir_x < 0)
+		info->tex_num = 2; // West texture
+	else if (info->side == 0 && info->dir_x > 0)
+		info->tex_num = 3; // East texture
+	else if (info->side == 1 && info->dir_y < 0)
+		info->tex_num = 1; // South texture
+	else if (info->side == 1 && info->dir_y > 0)
+		info->tex_num = 0; // North texture
+}
+
+void calculate_wall_texture(t_game *game, t_ray *info)
+{
+	if (info->side == 0)
+		info->wall_x = game->player.y + info->perp_wall_dist * info->dir_y;
+	else
+		info->wall_x = game->player.x + info->perp_wall_dist * info->dir_x;
+	info->wall_x -= floor(info->wall_x);
+
+	// x coordinate on the texture
+	info->tex_x = (int)(info->wall_x * (double)SIZE);
+	if (info->side == 0 && info->dir_y > 0)
+		info->tex_x = SIZE - info->tex_x - 1;
+	if (info->side == 1 && info->dir_y < 0)
+		info->tex_x = SIZE - info->tex_x - 1;
+}
+
+
 static void	carc(t_game *game)
 {
-	int x;
+	t_ray	info;
 
-	x = 0;
+	info.x = 0;
 	if (game->map_info.re_buf == 1)
 		set_buf_zero(game);
 	paint_floor(game);
-
-	// WALL CASTING
-	while (x < WIDTH)
+	while (info.x < WIDTH)
 	{
-		double cameraX = 2 * x / (double)WIDTH - 1;
-		double rayDirX = game->player.dir_x + game->player.planeX * cameraX;
-		double rayDirY = game->player.dir_y + game->player.planeY * cameraX;
-
-		int mapX = (int)game->player.x;
-		int mapY = (int)game->player.y;
-
-		// length of ray from current position to next x or y-side
-		double sideDistX;
-		double sideDistY;
-
-		// length of ray from one x or y-side to next x or y-side
-		double deltaDistX = fabs(1 / rayDirX);
-		double deltaDistY = fabs(1 / rayDirY);
-		double perpWallDist;
-
-		// what direction to step in x or y-direction (either +1 or -1)
-		int stepX;
-		int stepY;
-
-		int hit = 0; // was there a wall hit?
-		int side;    // was a NS or a EW wall hit?
-
-		if (rayDirX < 0)
-		{
-			stepX = -1;
-			sideDistX = (game->player.x - mapX) * deltaDistX;
-		}
-		else
-		{
-			stepX = 1;
-			sideDistX = (mapX + 1.0 - game->player.x) * deltaDistX;
-		}
-		if (rayDirY < 0)
-		{
-			stepY = -1;
-			sideDistY = (game->player.y - mapY) * deltaDistY;
-		}
-		else
-		{
-			stepY = 1;
-			sideDistY = (mapY + 1.0 - game->player.y) * deltaDistY;
-		}
-
-		while (hit == 0)
-		{
-			if (sideDistX < sideDistY)
-			{
-				sideDistX += deltaDistX;
-				mapX += stepX;
-				side = 0;
-			}
-			else
-			{
-				sideDistY += deltaDistY;
-				mapY += stepY;
-				side = 1;
-			}
-			// Check if ray has hit a wall
-			if (game->map_info.int_map[mapY][mapX] > 0)
-				hit = 1;
-		}
-		if (side == 0)
-			perpWallDist = (mapX - game->player.x + (1 - stepX) / 2) / rayDirX;
-		else
-			perpWallDist = (mapY - game->player.y + (1 - stepY) / 2) / rayDirY;
-
-		// Calculate height of line to draw on screen
-		int lineHeight = (int)(HEIGHT / perpWallDist);
-
-		// Calculate lowest and highest pixel to fill in current stripe
-		int drawStart = -lineHeight / 2 + HEIGHT / 2;
-		if (drawStart < 0)
-			drawStart = 0;
-		int drawEnd = lineHeight / 2 + HEIGHT / 2;
-		if (drawEnd >= HEIGHT)
-			drawEnd = HEIGHT - 1;
-
-		// Calculate lowest and highest pixel to fill in current stripe
-
-
-		// Texturing calculations
-		int texNum;
-		if (side == 0 && rayDirX < 0)
-			texNum = 2; // West texture
-		else if (side == 0 && rayDirX > 0)
-			texNum = 3; // East texture
-		else if (side == 1 && rayDirY < 0)
-			texNum = 1; // South texture
-		else if (side == 1 && rayDirY > 0)
-			texNum = 0; // North texture
-
-		// Calculate value of wallX
-		double wallX;
-		if (side == 0)
-			wallX = game->player.y + perpWallDist * rayDirY;
-		else
-			wallX = game->player.x + perpWallDist * rayDirX;
-		wallX -= floor(wallX);
-
-		// x coordinate on the texture
-		int texX = (int)(wallX * (double)SIZE);
-		if (side == 0 && rayDirX > 0)
-			texX = SIZE - texX - 1;
-		if (side == 1 && rayDirY < 0)
-			texX = SIZE - texX - 1;
-
+		init_raycasting(&info, game);
+		calculateSideDistances(game, &info);
+		findWallCollision(game, &info);
+		calculateDrawing(&info);
+		calculate_wall_texture(game, &info);
 		// How much to increase the texture coordinate per screen pixel
-		double step = 1.0 * SIZE / lineHeight;
+		double step = 1.0 * SIZE / info.line_height;
 		// Starting texture coordinate
-		double texPos = (drawStart - HEIGHT / 2 + lineHeight / 2) * step;
-		for (int y = drawStart; y < drawEnd; y++)
+		double texPos = (info.draw_start - HEIGHT / 2 + info.line_height / 2) * step;
+		for (int y = info.draw_start; y < info.draw_end; y++)
 		{
 			// Cast the texture coordinate to integer, and mask with (SIZE - 1) in case of overflow
 			int texY = (int)texPos & (SIZE - 1);
 			texPos += step;
-			int color = game->map_info.texture[texNum][SIZE * texY + texX];
+			int color = game->map_info.texture[info.tex_num][SIZE * texY + info.tex_x];
 			// make color darker for y-sides: R, G, and B byte each divided through two with a "shift" and an "and"
-			if (side == 1)
+			if (info.side == 1)
 				color = (color >> 1) & 8355711;
-			game->map_info.buf[y][x] = color;
+			game->map_info.buf[y][info.x] = color;
 			game->map_info.re_buf = 1;
 		}
-		x++;
+		info.x++;
 	}
 }
 

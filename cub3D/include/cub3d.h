@@ -1,20 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/24 18:18:12 by huipark           #+#    #+#             */
+/*   Updated: 2023/06/24 18:45:18 by huipark          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
-#define CUB3D_H
+# define CUB3D_H
 
-#include "get_next_line.h"
-#include "../mlx/mlx.h"
-#include "../Libft/libft.h"
-#include <stdio.h>
-#include <fcntl.h>
-#include <stdlib.h>
+# include "get_next_line.h"
+# include "../mlx/mlx.h"
+# include "../Libft/libft.h"
+# include <stdio.h>
+# include <fcntl.h>
+# include <stdlib.h>
 
-#define SIZE 64
+# define SIZE 64
 
-#define X_EVENT_KEY_PRESS		2
-#define X_EVENT_KEY_release		3
-#define X_EVENT_KEY_EXIT		17 //exit key code
+# define X_EVENT_KEY_PRESS			2
+# define X_EVENT_KEY_RELEASE		3
+# define X_EVENT_KEY_EXIT			17 //exit key code
 
-#define KEY_ESC			53
+# define KEY_ESC			53
 # define KEY_Q			12
 # define KEY_W			13
 # define KEY_E			14
@@ -24,6 +36,31 @@
 # define KEY_D			2
 # define KEY_LEFT_ARROW 123
 # define KEY_RIGHT_ARROW 124
+
+typedef struct s_ray
+{
+	double	dir_x;
+	double	dir_y;
+	double	camera_x;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	perp_wall_dist;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	wall_x;
+	int		tex_x;
+	int		map_x;
+	int		map_y;
+	int		hit;
+	int		side;
+	int		x;
+	int		step_x;
+	int		step_y;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		tex_num;
+}				t_ray;
 
 typedef struct	s_img
 {
