@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:18:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/23 19:46:08 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/25 14:18:42 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+int	main_loop(t_game *game)
+{
+	carc(game);
+	draw(game);
+	return (0);
+}
 
 int	main(int argc, char *argv[])
 {

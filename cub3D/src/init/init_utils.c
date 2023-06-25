@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:13:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/23 23:09:14 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/25 14:11:14 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,24 @@ void	init_player_direction(t_player *player, char c)
 	{
 		player->dir_x = 1.0;
 		player->dir_y = 0.0;
-		player->planeX = 0.0;
-		player->planeY = -0.66;
+		player->plane_x = 0.0;
+		player->plane_y = -0.66;
 		if (c == 'W')
 		{
 			player->dir_x = -player->dir_x;
-			player->planeY = -player->planeY;
+			player->plane_y = -player->plane_y;
 		}
 	}
 	else if (c == 'N' || c == 'S')
 	{
 		player->dir_x = 0.0;
 		player->dir_y = -1.0;
-		player->planeX = -0.66;
-		player->planeY = 0.0;
+		player->plane_x = -0.66;
+		player->plane_y = 0.0;
 		if (c == 'S')
 		{
 			player->dir_y = -player->dir_y;
-			player->planeX = -player->planeX;
+			player->plane_x = -player->plane_x;
 		}
 	}
 }

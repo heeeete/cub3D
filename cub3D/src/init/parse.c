@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:04:40 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/23 23:09:12 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/25 14:23:27 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	nullify_struct_members(t_game *game)
 {
-	game->img.NO = NULL;
-	game->img.SO = NULL;
-	game->img.WE = NULL;
-	game->img.EA = NULL;
-	game->img.F = NULL;
-	game->img.C = NULL;
+	game->img.no = NULL;
+	game->img.so = NULL;
+	game->img.we = NULL;
+	game->img.ea = NULL;
+	game->img.f = NULL;
+	game->img.c = NULL;
 }
 
 static void	check_texture_item(char *line, char *prefix, char **texture)
@@ -37,23 +37,23 @@ static void	check_texture_item(char *line, char *prefix, char **texture)
 
 void	check_texture(t_game *game, char *line)
 {
-	check_texture_item(line, "NO ", &(game->img.NO));
-	check_texture_item(line, "SO ", &(game->img.SO));
-	check_texture_item(line, "WE ", &(game->img.WE));
-	check_texture_item(line, "EA ", &(game->img.EA));
+	check_texture_item(line, "NO ", &(game->img.no));
+	check_texture_item(line, "SO ", &(game->img.so));
+	check_texture_item(line, "WE ", &(game->img.we));
+	check_texture_item(line, "EA ", &(game->img.ea));
 	if (!ft_strncmp(line, "F ", 2))
 	{
 		line += 2;
 		while (*line == ' ')
 			++line;
-		game->img.F = ft_strdup(line);
+		game->img.f = ft_strdup(line);
 	}
 	if (!ft_strncmp(line, "C ", 2))
 	{
 		line += 2;
 		while (*line == ' ')
 			++line;
-		game->img.C = ft_strdup(line);
+		game->img.c = ft_strdup(line);
 	}
 }
 
@@ -65,7 +65,7 @@ void	texture_parsing(t_game *game, char **map)
 	nullify_struct_members(game);
 	while (i < 6)
 		check_texture(game, map[i++]);
-	if (!game->img.EA || !game->img.NO || !game->img.WE || !game->img.NO)
+	if (!game->img.ea || !game->img.no || !game->img.we || !game->img.no)
 		error("invaild file", NULL);
 }
 
@@ -80,7 +80,7 @@ void	parse_map(t_game *game)
 	i = 6;
 	j = 0;
 	new_map = wrap_malloc(sizeof(char *) * (game->map_info.map_height + 1));
-		max_len = ft_strlen(game->map_info.map[i]);
+	max_len = ft_strlen(game->map_info.map[i]);
 	while (game->map_info.map[i])
 	{
 		new_map[j++] = ft_strdup(game->map_info.map[i++]);

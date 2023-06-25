@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:10:14 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/23 23:09:13 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/25 14:09:30 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ void	init(t_game *game, char *argv)
 	read_map(game, fd);
 	texture_parsing(game, game->map_info.map);
 	init_rgb(game);
-	free(game->img.F);
-	free(game->img.C);
-	game->img.F = NULL;
-	game->img.C = NULL;
+	free(game->img.f);
+	free(game->img.c);
+	game->img.f = NULL;
+	game->img.c = NULL;
 	parse_map(game);
 	search_map(game, &game->player);
 	game->mlx = mlx_init();

@@ -1,6 +1,7 @@
 {
 	"files.associations": {
 		"cstring": "c",
-		"mlx.h": "c"
+		"mlx.h": "c",
+		"cub3d.h": "c"
 	}
 }

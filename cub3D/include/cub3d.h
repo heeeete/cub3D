@@ -6,7 +6,7 @@
 /*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 18:18:12 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/24 18:45:18 by huipark          ###   ########.fr       */
+/*   Updated: 2023/06/25 14:14:28 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <math.h>
+
+# define HEIGHT 1080
+# define WIDTH 1920
 
 # define SIZE 64
 
@@ -48,7 +52,10 @@ typedef struct s_ray
 	double	delta_dist_x;
 	double	delta_dist_y;
 	double	wall_x;
+	double	step;
+	double	tex_pos;
 	int		tex_x;
+	int		tex_y;
 	int		map_x;
 	int		map_y;
 	int		hit;
@@ -62,7 +69,7 @@ typedef struct s_ray
 	int		tex_num;
 }				t_ray;
 
-typedef struct	s_img
+typedef struct s_img
 {
 	void	*img;
 	int		*data;
@@ -73,15 +80,15 @@ typedef struct	s_img
 	int		img_width;
 	int		img_height;
 
-	char	*NO;
-	char	*SO;
-	char	*WE;
-	char	*EA;
-	char	*F;
-	char	*C;
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	char	*f;
+	char	*c;
 }				t_img;
 
-typedef struct	s_rgb
+typedef struct s_rgb
 {
 	int	r;
 	int	g;
@@ -89,7 +96,7 @@ typedef struct	s_rgb
 	int	rgb;
 }				t_rgb;
 
-typedef struct	s_map
+typedef struct s_map
 {
 	char	**map;
 	char	**int_map;
@@ -106,14 +113,14 @@ typedef struct s_playsr
 	double		y;
 	double		dir_x;
 	double		dir_y;
-	double		planeX;
-	double		planeY;
+	double		plane_x;
+	double		plane_y;
 	double		move_speed;
 	double		rot_speed;
-	char	player_direction;
+	char		player_direction;
 }				t_player;
 
-typedef struct	s_game
+typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
@@ -124,50 +131,60 @@ typedef struct	s_game
 	t_rgb		c_rgb;
 }				t_game;
 
+//main.c
+int		main_loop(t_game *game);
+
 //utils.c
 void	error(char *msg, char *msg2);
 void	*wrap_malloc(size_t s);
 int		exit_game(void);
-int	check_format(char *str);
+int		check_format(char *str);
 
 //parse.c
 void	check_texture(t_game *game, char *line);
 void	texture_parsing(t_game *game, char **map);
-void	 parse_map(t_game *game);
+void	parse_map(t_game *game);
 
 //init.c
-void nullify_struct_members(t_game *game);
-void init(t_game *game, char *argv);
-void init_rgb(t_game *game);
+void	nullify_struct_members(t_game *game);
+void	init(t_game *game, char *argv);
+void	init_rgb(t_game *game);
 
 //init_utils.c
-int	check_map_error(char c);
-int	check_invalid_map(int i, int j, int prev_line_len, t_game *game);
+int		check_map_error(char c);
+int		check_invalid_map(int i, int j, int prev_line_len, t_game *game);
 void	check_player_position(char **map, int x, int y);
 void	find_player_direction(t_player *player, char c, int i, int j);
 void	init_player_direction(t_player *player, char c);
 
 //key_press_utils.c
-int key_press(int key, t_game *game);
+int		key_press(int key, t_game *game);
 void	press_w(t_game *game);
 void	press_s(t_game *game);
 void	press_a(t_game *game);
 void	press_d(t_game *game);
-void press_right(t_player *player);
-void press_left(t_player *player);
+void	press_right(t_player *player);
+void	press_left(t_player *player);
+
+//draw.c
+void	carc(t_game *game);
+void	draw(t_game *game);
 
 //raycasting.c
-int main_loop(t_game *game);
+void	calculate_side_distances(t_game *game, t_ray *info);
+void	fine_wall_collision(t_game *game, t_ray *info);
+void	calculate_drawing(t_ray *info);
+void	calculate_wall_texture(t_game *game, t_ray *info);
+void	draw_texture(t_game *game, t_ray *info);
 
 //init_map.c
-void init_int_map(t_game *game);
-void init_game_map(t_game *game);
+void	init_int_map(t_game *game);
+void	init_game_map(t_game *game);
 
 //init_texture.c
 void	init_texture(t_game *game);
 
 //init_rgb.c
 void	init_rgb(t_game *game);
-
 
 #endif

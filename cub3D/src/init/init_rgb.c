@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_rgb.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 22:59:19 by jimpark           #+#    #+#             */
-/*   Updated: 2023/06/23 23:09:15 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/25 14:09:30 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ void	init_rgb(t_game *game)
 
 	f_rgb = &(game->f_rgb);
 	c_rgb = &(game->c_rgb);
-	check_rgb(game->img.F);
-	check_rgb(game->img.C);
-	set_rgb(&game->f_rgb, game->img.F);
-	set_rgb(&game->c_rgb, game->img.C);
+	check_rgb(game->img.f);
+	check_rgb(game->img.c);
+	set_rgb(&game->f_rgb, game->img.f);
+	set_rgb(&game->c_rgb, game->img.c);
 	f_rgb->rgb = (f_rgb->r << 16 | f_rgb->g << 8 | f_rgb->b);
 	c_rgb->rgb = (c_rgb->r << 16 | c_rgb->g << 8 | c_rgb->b);
 }

@@ -15,6 +15,7 @@ GNL_DIR = $(SRCS_DIR)gnl/
 KEY_PRESS_DIR = $(SRCS_DIR)key_press/
 
 SRCS = $(SRCS_DIR)main.c \
+		$(SRCS_DIR)draw.c \
 		$(SRCS_DIR)utils.c \
 		$(SRCS_DIR)raycasting.c \
 		$(GNL_DIR)get_next_line.c \
@@ -37,17 +38,20 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(DEPS)
-	@make -s bonus -C $(LIBFT_DIR)
-	${CC} ${CFLAGS} $(MFLAGS) $(OPT) $(SRCS) $(LIBFT_FLAG) -o ${NAME}
+	@make bonus -s -C $(LIBFT_DIR)
+	@make -s -C ./mlx
+	@${CC} ${CFLAGS} $(MFLAGS) $(OPT) $(SRCS) $(LIBFT_FLAG) -o ${NAME}
 
 
 clean:
-	$(RM) $(OBJS)
-	$(MAKE) -C $(LIBFT_DIR) clean
+	@$(RM) $(OBJS)
+	@$(MAKE) -C $(LIBFT_DIR) -s clean
+	@$(MAKE) -C ./mlx -s clean
 
 fclean: clean
 	$(RM) $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
+	$(MAKE) -C ./mlx clean
 
 re:
 	$(MAKE) fclean

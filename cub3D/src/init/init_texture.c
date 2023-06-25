@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 19:26:48 by jimpark           #+#    #+#             */
-/*   Updated: 2023/06/23 23:09:15 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/25 14:08:01 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ static void	load_texture(t_game *game)
 {
 	t_img	img;
 
-	load_image(game, game->map_info.texture[0], game->img.NO, &img);
-	load_image(game, game->map_info.texture[1], game->img.SO, &img);
-	load_image(game, game->map_info.texture[2], game->img.WE, &img);
-	load_image(game, game->map_info.texture[3], game->img.EA, &img);
+	load_image(game, game->map_info.texture[0], game->img.no, &img);
+	load_image(game, game->map_info.texture[1], game->img.so, &img);
+	load_image(game, game->map_info.texture[2], game->img.we, &img);
+	load_image(game, game->map_info.texture[3], game->img.ea, &img);
 }
 
 void	init_texture(t_game *game)
