@@ -1,0 +1,14 @@
+NO            textures/redbrick.xpm
+SO       textures/colorstone.xpm
+WE      textures/greystone.xpm
+EA   textures/wood.xpm
+
+F 102, 051, 000
+C 102, 153, 255
+
+
+1111111111
+1010100001
+11E1111011
+1010111011
+1111111111

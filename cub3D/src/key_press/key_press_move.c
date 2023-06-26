@@ -6,7 +6,7 @@
 /*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 17:52:39 by jimpark           #+#    #+#             */
-/*   Updated: 2023/06/23 23:16:55 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/26 15:23:22 by jimpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ void	press_a(t_game *game)
 	double	move_speed;
 
 	move_speed = game->player.move_speed;
-	new_player_x = game->player.x - game->player.dir_y * move_speed;
-	new_player_y = game->player.y + game->player.dir_x * move_speed;
+	new_player_x = game->player.x + game->player.dir_y * move_speed;
+	new_player_y = game->player.y - game->player.dir_x * move_speed;
 	if (game->map_info.int_map[(int)new_player_y][(int)game->player.x] == 0)
 		game->player.y = new_player_y;
 	if (game->map_info.int_map[(int)game->player.y][(int)new_player_x] == 0)
@@ -64,8 +64,8 @@ void	press_d(t_game *game)
 	double	move_speed;
 
 	move_speed = game->player.move_speed;
-	new_player_x = game->player.x + game->player.dir_y * move_speed;
-	new_player_y = game->player.y - game->player.dir_x * move_speed;
+	new_player_x = game->player.x - game->player.dir_y * move_speed;
+	new_player_y = game->player.y + game->player.dir_x * move_speed;
 	if (game->map_info.int_map[(int)new_player_y][(int)game->player.x] == 0)
 		game->player.y = new_player_y;
 	if (game->map_info.int_map[(int)game->player.y][(int)new_player_x] == 0)
