@@ -6,11 +6,21 @@
 /*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 22:59:19 by jimpark           #+#    #+#             */
-/*   Updated: 2023/06/25 14:09:30 by huipark          ###   ########.fr       */
+/*   Updated: 2023/06/26 20:16:09 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
+
+static void	rgb_range_check(t_rgb rgb)
+{
+	if (rgb.r < 0 || rgb.r > 255)
+		error("RGB Error : Check the range of rgb", NULL);
+	else if (rgb.g < 0 || rgb.g > 255)
+		error("RGB Error : Check the range of rgb", NULL);
+	else if (rgb.b < 0 || rgb.b > 255)
+		error("RGB Error : Check the range of rgb", NULL);
+}
 
 static void	check_rgb(char *rgb_str)
 {
@@ -80,6 +90,8 @@ void	init_rgb(t_game *game)
 	check_rgb(game->img.c);
 	set_rgb(&game->f_rgb, game->img.f);
 	set_rgb(&game->c_rgb, game->img.c);
+	rgb_range_check(game->f_rgb);
+	rgb_range_check(game->c_rgb);
 	f_rgb->rgb = (f_rgb->r << 16 | f_rgb->g << 8 | f_rgb->b);
 	c_rgb->rgb = (c_rgb->r << 16 | c_rgb->g << 8 | c_rgb->b);
 }
