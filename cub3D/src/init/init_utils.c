@@ -6,7 +6,7 @@
 /*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:13:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/26 16:35:03 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/06/26 17:11:36 by jimpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	find_player_direction(t_player *player, char c, int i, int j)
 	{
 		if (player->x != -1 && player->y != -1)
 			error("Error : There must be only one player", NULL);
-		player->x = j;
-		player->y = i;
+		player->x = j + 0.5;
+		player->y = i + 0.5;
 		player->player_direction = c;
 		init_player_direction(player, c);
 	}
