@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:13:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/06/26 17:11:36 by jimpark          ###   ########.fr       */
+/*   Updated: 2023/07/06 13:25:17 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,15 @@ void	check_player_position(char **map, int x, int y)
 int	check_invalid_map(int i, int j, int prev_line_len, t_game *game)
 {
 	char	**map;
+	int		next_line_len;
 
 	map = game->map_info.map;
-	if (j > prev_line_len)
+	next_line_len = ft_strlen(map[i+1]);
+	// printf("%d %d\n", next_line_len);
+	if (j + 1 > prev_line_len || j + 1 > next_line_len)
 		return (1);
 	if (i == 0 || j == 0 || i == game->map_info.map_height \
+		|| !map[i + 1]
 		|| !map[i][j + 1] || map[i][j - 1] == ' ' || map[i][j + 1] == ' ' \
 		|| map[i - 1][j] == ' ' || map[i + 1][j] == ' ')
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 19:26:48 by jimpark           #+#    #+#             */
-/*   Updated: 2023/06/26 16:43:43 by huipark          ###   ########.fr       */
+/*   Updated: 2023/07/06 13:31:16 by huipark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static void	load_image(t_game *game, int *texture, char *path, t_img *img)
 
 	img->img = mlx_xpm_file_to_image(game->mlx, path, \
 									&img->img_width, &img->img_height);
+	if (!img->img)
+		error("Error : textuer read error", NULL);
 	img->data = (int *)mlx_get_data_addr(img->img, &img->bpp, \
 									&img->size_l, &img->endian);
 	y = 0;
