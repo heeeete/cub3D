@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: huipark <huipark@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jimpark <jimpark@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 17:13:36 by huipark           #+#    #+#             */
-/*   Updated: 2023/07/06 13:25:17 by huipark          ###   ########.fr       */
+/*   Updated: 2023/07/09 22:49:17 by jimpark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	init_player_direction(t_player *player, char c)
 {
 	if (c == 'E' || c == 'W')
 	{
-		player->dir_x = 1.0;
+		player->dir_x = 0.999999;
 		player->dir_y = 0.0;
 		player->plane_x = 0.0;
 		player->plane_y = 0.66;
@@ -29,7 +29,7 @@ void	init_player_direction(t_player *player, char c)
 	else if (c == 'N' || c == 'S')
 	{
 		player->dir_x = 0.0;
-		player->dir_y = -1.0;
+		player->dir_y = -0.999999;
 		player->plane_x = 0.66;
 		player->plane_y = 0.0;
 		if (c == 'S')
@@ -75,8 +75,7 @@ int	check_invalid_map(int i, int j, int prev_line_len, t_game *game)
 	int		next_line_len;
 
 	map = game->map_info.map;
-	next_line_len = ft_strlen(map[i+1]);
-	// printf("%d %d\n", next_line_len);
+	next_line_len = ft_strlen(map[i + 1]);
 	if (j + 1 > prev_line_len || j + 1 > next_line_len)
 		return (1);
 	if (i == 0 || j == 0 || i == game->map_info.map_height \
